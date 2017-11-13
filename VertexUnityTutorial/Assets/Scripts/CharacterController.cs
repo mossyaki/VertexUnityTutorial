@@ -8,7 +8,7 @@ public class CharacterController : MonoBehaviour {
 
     
 
-    #region Deklaracja zmiennych
+    #region Deklaracja obiektow
     [SerializeField]
     private float velocity;
     [SerializeField]
@@ -17,22 +17,31 @@ public class CharacterController : MonoBehaviour {
     private float groundCheckRaycastRange;
     [SerializeField]
     private float verticalSpeedJumpTreshold;
+    //[SerializeField]                          //nowe pole
+    //private float losowaRzecz;                //wielka litera = nowe slowo
     #endregion
     
 
-    // Use this for initialization
+    // Use this for initialization - when game starts
     void Start () {
 		
 	}
 
+    //when object is created
+    private void Awake()
+    {
+        
+    }
 
-	
-	// Update is called once per frame
-	void LateUpdate () {
+    // Update is called once per frame
+    //Update() - co klatke, LateUpdate() - co klatke, wykonuje sie po update wszystkich obj; FixedUpdate() - co x czasu, uzywany do fizyki
+    void Update () {
         float horizontalMovement = Input.GetAxis("Horizontal");
         bool jump = Input.GetKeyDown(KeyCode.W);
 
-        transform.Translate(horizontalMovement * velocity * Vector2.right);
+        //GetKey - zbiera kiedy trzyma; GetKeyDown/Up - zbiera kiedy zmienia sie stan[klika/puszcza]
+
+        transform.Translate(horizontalMovement * velocity * Vector2.right * Time.deltaTime);
         if(jump == true && Mathf.Abs(GetComponent<Rigidbody2D>().velocity.y) < verticalSpeedJumpTreshold & IsGrounded() == true)
         {
             GetComponent<Rigidbody2D>().AddForce(jumpForce * Vector2.up);
